@@ -1,0 +1,18 @@
+{
+  "name": "aspnuxt.client",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "dependencies": {
+    "@types/grecaptcha": "^3.0.9",
+    "nuxt": "^4.1.1",
+    "sass": "^1.92.1",
+    "vue": "^3.5.21"
+  }
+}

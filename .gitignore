@@ -1,0 +1,6 @@
+.idea
+.vs
+.env
+package.g.props
+obj
+bin

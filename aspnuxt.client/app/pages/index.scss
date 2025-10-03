@@ -1,0 +1,37 @@
+@use '../app' as app;
+
+
+
+.centerdiv {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; // Full viewport height
+    text-align: center;
+    flex-direction: column;
+
+    h1 {
+        font-size: 64px;
+    }
+
+    p {
+        font-size: 24px;
+    }
+}
+
+
+
+// Laptops Responsive
+@media screen and (max-width: app.$laptopBreakpoint) {
+
+}
+
+// tablet
+@media screen and (max-width: app.$tabletBreakpoint) {
+
+}
+
+// mobile
+@media screen and (max-width: app.$mobileBreakpoint) {
+
+}
