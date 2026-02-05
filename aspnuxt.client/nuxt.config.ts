@@ -1,12 +1,19 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+import crypto  from 'node:crypto'
+import path from "node:path";
 
-import { fileURLToPath } from 'url'
+const target = 'http://localhost:5283'
+const isProd = process.env.NODE_ENV === 'production';
 
-const target = process.env.ASPNETCORE_HTTPS_PORT
-    ? `http://localhost:${process.env.ASPNETCORE_HTTPS_PORT}`
-    : process.env.ASPNETCORE_URLS
-        ? process.env.ASPNETCORE_URLS.split(';')[0]
-        : 'http://localhost:5283'
+function stableHash(input: string, length: number = 11): string {
+    return crypto.createHash("sha256").update(input).digest("base64url").slice(0, length);
+}
+
+function stablePrefixLetter(input: string): string {
+    const alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    const digest = crypto.createHash("sha256").update(input).digest();
+    return alphabet[digest[0]! % alphabet.length]!;
+}
 
 export default defineNuxtConfig({
     compatibilityDate: '2025-07-15',
@@ -27,11 +34,6 @@ export default defineNuxtConfig({
                 proxy: `${target}/api/**`
             }
         },
-
-        prerender: {
-            crawlLinks: true,
-            failOnError: false
-        }
     },
 
     runtimeConfig: {
@@ -39,7 +41,31 @@ export default defineNuxtConfig({
     },
 
     experimental: {
-        viewTransition: true,
-        payloadExtraction: true,
+        //viewTransition: true,
+    },
+
+    vite: {
+        css: {
+            modules: {
+                generateScopedName(className: string, fileName: string) { // hashing of css class names to avoid collisions, comment this unless you want it
+                    const cleanFileName = (fileName.split("?")[0] ?? fileName);
+
+                    const normalizedFileName = cleanFileName.replaceAll("\\", "/");
+                    const normalizedRoot = process.cwd().replaceAll("\\", "/");
+
+                    const relativeFile = path.posix.relative(normalizedRoot, normalizedFileName);
+
+                    const seed = `${relativeFile}:${className}`;
+                    const hash = stableHash(seed);
+                    const prefix = stablePrefixLetter(seed);
+
+                    return isProd ? `${prefix}${hash}` : `${className}__${prefix}${hash}`;
+                },
+            }
+        }
+    },
+
+    features: {
+        inlineStyles: true,
     },
 })
