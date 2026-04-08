@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Start the backend in the background
-dotnet aspnuxt.Server.dll &
+dotnet server.dll &
 
 # Start the frontend (vite preview) in the background
 cd /app/client/.output

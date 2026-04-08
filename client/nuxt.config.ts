@@ -17,6 +17,9 @@ function stablePrefixLetter(input: string): string {
 
 export default defineNuxtConfig({
     compatibilityDate: '2025-07-15',
+    css: [
+        "~/assets/app.scss",
+    ],
     devtools: {
       enabled: true,
 

@@ -10,9 +10,8 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
-    "@types/grecaptcha": "^3.0.9",
-    "nuxt": "^4.3.0",
-    "sass": "^1.97.3",
-    "vue": "^3.5.27"
+    "nuxt": "^4.4.2",
+    "sass": "^1.99.0",
+    "vue": "^3.5.32"
   }
 }

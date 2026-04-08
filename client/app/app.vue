@@ -81,4 +81,6 @@ useHead({
     <NuxtPage />
 </template>
 
-<style src="./app.scss" />
+<style module lang="scss">
+
+</style>

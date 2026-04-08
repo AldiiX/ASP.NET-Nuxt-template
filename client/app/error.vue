@@ -73,4 +73,6 @@ function goHome() {
     </main>
 </template>
 
-<style src="./app.scss"></style>
+<style module lang="scss">
+
+</style>

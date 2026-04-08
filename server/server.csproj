@@ -1,25 +1,24 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
     <PropertyGroup>
-        <TargetFramework>net9.0</TargetFramework>
+        <TargetFramework>net10.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
-        <UserSecretsId>db420983-1241-40dc-bd80-07cc98d7fdf2</UserSecretsId>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="dotenv.net" Version="4.0.0" />
-        <PackageReference Include="MailKit" Version="4.13.0" />
-        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.9" />
-        <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.22.1" />
-        <PackageReference Include="MimeKit" Version="4.13.0" />
+        <PackageReference Include="dotenv.net" Version="4.0.1" />
+        <PackageReference Include="MailKit" Version="4.15.1" />
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.5" />
+        <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.23.0" />
+        <PackageReference Include="MimeKit" Version="4.15.1" />
 <!--        <PackageReference Include="MySql.Data" Version="9.4.0" />-->
 <!--        <PackageReference Include="Npgsql" Version="9.0.4" />-->
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\aspnuxt.client\aspnuxt.client.esproj">
+        <ProjectReference Include="..\client\client.esproj">
             <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
         </ProjectReference>
     </ItemGroup>

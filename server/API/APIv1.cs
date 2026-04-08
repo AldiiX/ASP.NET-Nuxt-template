@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace aspnuxt.Server.API;
+namespace server.API;
 
 [ApiController]
 [Route("api/v1")]
