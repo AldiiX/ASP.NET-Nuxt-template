@@ -49,7 +49,6 @@ useHead({
         <Title>ASP.NET Core + Nuxt</Title>
         <Meta name="description" :content="description" />
         <Meta name="robots" :content="robotsValue" />
-        <Link rel="stylesheet" href="/lib/pure.css" type="text/css" />
 <!--        <Link rel="canonical" :href="canonicalUrl" />-->
 
         <!-- hreflang alternace -->

@@ -63,16 +63,68 @@ function goHome() {
 </script>
 
 <template>
-    <main id="error-page">
-        <div class="center">
-            <div class="logo" aria-hidden="true"></div>
+    <main :class="$style.error">
+        <div :class="$style.center">
+            <div :class="$style.logo" aria-hidden="true"></div>
             <h1>Error {{ code }}</h1>
-            <p class="desc">{{ message }}</p>
-            <button class="btn" @click="goHome">Back</button>
+            <p :class="$style.desc">{{ message }}</p>
+            <button :class="$style.btn" @click="goHome">Back</button>
         </div>
     </main>
 </template>
 
 <style module lang="scss">
+.error {
+    min-height: 100vh;
 
+    .center {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+    }
+
+    .logo {
+        mask-image: url('../public/icons/nuxt.svg');
+        mask-size: contain;
+        mask-repeat: no-repeat;
+        width: 10vw;
+        height: 10vw;
+        margin: 0 auto;
+        position: relative;
+        margin-bottom: 32px;
+    }
+
+    .logo::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-color: var(--accent-color, #00DC82);
+    }
+
+    h1 { font-family: "gabarito", "Arial Black", sans-serif; font-size: 3vw; color: var(--text-color); }
+    .desc { font-family: "gabarito", sans-serif; font-size: 16px; margin: 0; color: var(--text-color-lighter); }
+
+    .btn {
+        font-family: "gabarito", sans-serif;
+        font-size: 16px;
+        margin: 0 auto;
+        margin-top: 32px;
+        padding: 16px 64px;
+        background-color: var(--accent-color);
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        color: #fff;
+        transition: filter .3s ease;
+    }
+    .btn:hover { filter: brightness(0.9); }
+
+    /* mobil */
+    @media (max-width: 600px) {
+        .logo { width: 50vw; height: 50vw; }
+        h1 { font-size: 10vw; }
+    }
+}
 </style>

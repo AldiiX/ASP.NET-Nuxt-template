@@ -14,8 +14,6 @@
 <style module lang="scss">
 @use "../assets/app" as *;
 
-
-
 .centerdiv {
     display: flex;
     justify-content: center;
@@ -24,8 +22,13 @@
     text-align: center;
     flex-direction: column;
 
+    h1,p  {
+        font-family: gabarito, sans-serif; font-size: 3vw; color: var(--text-color);
+    }
+
     h1 {
         font-size: 64px;
+        color: var(--accent-color, #00DC82);
     }
 
     p {
