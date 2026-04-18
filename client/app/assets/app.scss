@@ -89,6 +89,8 @@ $desktopBreakpoint: 1800px;
     body {
         background-color: var(--background-color);
         color: var(--text-color-1);
+        transition-duration: 0.3s;
+        transition-property: background-color;
     }
 
     .grecaptcha-badge {

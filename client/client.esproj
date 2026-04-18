@@ -11,5 +11,8 @@
   <ItemGroup>
     <Folder Include="app\components\" />
     <Folder Include="app\composables\" />
+    <Folder Include="app\layouts\" />
+    <Folder Include="app\middleware\" />
+    <Folder Include="server\" />
   </ItemGroup>
 </Project>

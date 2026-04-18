@@ -1,1 +1,0 @@
-export type WebTheme = "dark" | "light";

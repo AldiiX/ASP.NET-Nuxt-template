@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type {WebTheme} from "~/lib/types";
+import type {WebTheme} from "#shared/types";
 
 const nuxtError = useError();
 const theme = useState<WebTheme>('theme', () => 'light');

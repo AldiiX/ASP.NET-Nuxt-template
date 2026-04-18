@@ -2,8 +2,7 @@
 import { NuxtPage, Head, Title, Meta, Html, Link } from '#components'
 import { computed, onMounted, ref } from 'vue'
 import { useNuxtApp, useRoute, useCookie, useHead } from '#imports'
-import { NuxtLink, ClientOnly } from '#components';
-import type {WebTheme} from "~/lib/types";
+import type {WebTheme} from "#shared/types";
 
 // state
 const route = useRoute();
