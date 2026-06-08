@@ -1,6 +1,10 @@
 **/.classpath
 **/.dockerignore
-# **/.env
+#**/.env
+**/.data
+**/.nuxt
+**/.output
+**/127.0.0.1
 **/.git
 **/.gitignore
 **/.project

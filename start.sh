@@ -3,9 +3,8 @@
 # Start the backend in the background
 dotnet server.dll &
 
-# Start the frontend (vite preview) in the background
-cd /app/client/.output
-node server/index.mjs &
+# Start the frontend in the background
+node /app/client/.output/server/index.mjs &
 
 # Start Nginx
 nginx -g 'daemon off;'

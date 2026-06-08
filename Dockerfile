@@ -1,66 +1,67 @@
-# Define the user ID (default value 1000)
-ARG APP_UID=1000
+# syntax=docker/dockerfile:1.7
 
-# Base stage
-FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS base
-WORKDIR /app
-
-# Stage to install Node.js
-FROM mcr.microsoft.com/dotnet/sdk:10.0 AS with-node
-RUN apt-get update && apt-get install -y curl
-RUN curl -sL https://deb.nodesource.com/setup_24.x | bash && apt-get install -y nodejs
-
-# Stage to build the backend
-FROM with-node AS build
 ARG BUILD_CONFIGURATION=Release
+ARG NODE_VERSION=24-bookworm-slim
+
+FROM node:${NODE_VERSION} AS node-runtime
+
+FROM node:${NODE_VERSION} AS client-build
+WORKDIR /src/client
+
+ARG DEPLOY_ENVIRONMENT
+ENV DEPLOY_ENVIRONMENT=$DEPLOY_ENVIRONMENT
+
+COPY ["client/package.json", "client/package-lock.json", "./"]
+RUN --mount=type=cache,target=/root/.npm npm ci
+
+COPY ["client/", "./"]
+RUN npm run build
+
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /src
+
+ARG BUILD_CONFIGURATION
+
 COPY ["server/server.csproj", "server/"]
-COPY ["client/client.esproj", "client/"]
-RUN dotnet restore "./server/server.csproj"
+RUN --mount=type=cache,target=/root/.nuget/packages \
+    dotnet restore "./server/server.csproj" /p:SkipClientProjectReference=true
+
 COPY . .
 WORKDIR "/src/server"
 
-# vytvoreni prazdnyho .env souboru v tomto direktory pokud .env neexistuje
-RUN if [ ! -f ".env" ]; then touch .env; fi
+RUN --mount=type=secret,id=ENV_B64 \
+    sh -c 'set -eu; \
+      if [ -f .env ] && [ -s .env ]; then echo ".env uz existuje, preskakuju envb64"; \
+      elif [ -f /run/secrets/ENV_B64 ] && [ -s /run/secrets/ENV_B64 ]; then echo "vytvarim .env z ENV_B64"; \
+        base64 -d /run/secrets/ENV_B64 > .env; chmod 600 .env; \
+      else echo "neni .env a neni secret, vytvarim prazdny .env"; : > .env; chmod 600 .env; fi'
 
-# buildnuti backendu
-RUN dotnet build "./server.csproj" -c $BUILD_CONFIGURATION -o /app/build
-
-# Stage to publish the backend
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./server.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN --mount=type=cache,target=/root/.nuget/packages \
+    dotnet publish "./server.csproj" -c $BUILD_CONFIGURATION -o /app/publish --no-restore /p:UseAppHost=false /p:SkipClientProjectReference=true
 
-# Final stage
-FROM base AS final
+FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS final
 WORKDIR /app
-COPY --from=publish /app/publish .
 
-# Switch to root to install packages
+ARG DEPLOY_ENVIRONMENT
+ENV DEPLOY_ENVIRONMENT=$DEPLOY_ENVIRONMENT
+ENV DEBIAN_FRONTEND=noninteractive
+
 USER root
-RUN apt-get update && apt-get install -y curl nginx
-RUN curl -sL https://deb.nodesource.com/setup_22.x | bash && apt-get install -y nodejs
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        libgssapi-krb5-2 \
+        nginx \
+    && rm -rf /var/lib/apt/lists/*
 
-# Copy frontend files and fix permissions
-COPY ["client/", "/app/client/"]
-RUN chown -R $APP_UID:$APP_UID /app/client
-WORKDIR /app/client
+# Nuxt Nitro output is self-contained, but SSR still needs a Node runtime.
+COPY --from=node-runtime /usr/local/bin/node /usr/local/bin/node
 
-# Set npm cache and install dependencies
-RUN npm config set cache /app/.npm
-RUN npm install --unsafe-perm
-
-# Build the frontend
-RUN npm run build
-
-# Copy Nginx configuration
+COPY --from=publish /app/publish ./
+COPY --from=client-build /src/client/.output /app/client/.output
 COPY nginx.conf /etc/nginx/nginx.conf
 
-# Switch back to non-privileged user
-#USER $APP_UID
-
-# Prepare the start script
 EXPOSE 80
-WORKDIR /app
 COPY --chmod=0755 start.sh .
 CMD ["./start.sh"]
