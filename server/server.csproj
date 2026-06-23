@@ -33,9 +33,9 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <None Remove=".env" />
-        <Content Include=".env" Condition="Exists('.env')">
+        <Content Include=".env">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+            <CopyToPublishDirectory>Always</CopyToPublishDirectory>
         </Content>
     </ItemGroup>
 
