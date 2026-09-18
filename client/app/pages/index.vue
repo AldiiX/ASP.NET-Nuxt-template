@@ -25,13 +25,13 @@
     flex-direction: column;
 
     h1,p,button  {
-        font-family: gabarito, sans-serif; font-size: 3vw; color: var(--text-color);
+        font-family: gabarito, sans-serif; font-size: 3vw; color: var(--text-color-1);
         transition-duration: 0.3s;
     }
 
     h1 {
         font-size: 64px;
-        color: var(--accent-color, #00DC82);
+        color: var(--accent-color-1, #00DC82);
     }
 
     p {
@@ -42,7 +42,7 @@
         margin-top: 20px;
         padding: 10px 20px;
         font-size: 16px;
-        background-color: var(--accent-color, #00DC82);
+        background-color: var(--accent-color-1, #00DC82);
         color: #fff;
         border: none;
         border-radius: 5px;
@@ -50,7 +50,7 @@
         transition: background-color 0.3s ease;
 
         &:hover {
-            background-color: hsl(from var(--accent-color, #00DC82) h s l / 80%);
+            background-color: hsl(from var(--accent-color-1, #00DC82) h s l / 80%);
         }
     }
 }

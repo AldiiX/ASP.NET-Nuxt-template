@@ -27,19 +27,24 @@ RUN --mount=type=cache,target=/root/.nuget/packages \
     dotnet restore "./server/server.csproj" /p:SkipClientProjectReference=true
 
 COPY . .
-WORKDIR "/src/server"
 
+# Dekoduj ENV_B64 secret do /src/.env (root projektu) - jeste pred presunem do /src/server
+# Lokalni .env (pokud existuje) uz je tu z "COPY . ." - secret krok ho preskoci
 RUN --mount=type=secret,id=ENV_B64 \
     sh -c 'set -eu; \
-      if [ -f .env ] && [ -s .env ]; then echo ".env uz existuje, preskakuju envb64"; \
-      elif [ -f /run/secrets/ENV_B64 ] && [ -s /run/secrets/ENV_B64 ]; then echo "vytvarim .env z ENV_B64"; \
+      if [ -f .env ] && [ -s .env ]; then echo ".env uz existuje (z build kontextu), preskakuju secret"; \
+      elif [ -f /run/secrets/ENV_B64 ] && [ -s /run/secrets/ENV_B64 ]; then echo "vytvarim .env z ENV_B64 secretu"; \
         base64 -d /run/secrets/ENV_B64 > .env; chmod 600 .env; \
-      else echo "neni .env a neni secret, vytvarim prazdny .env"; : > .env; chmod 600 .env; fi'
+      else echo "neni .env ani secret, vytvarim prazdny .env"; : > .env; chmod 600 .env; fi'
+
+WORKDIR "/src/server"
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
 RUN --mount=type=cache,target=/root/.nuget/packages \
     dotnet publish "./server.csproj" -c $BUILD_CONFIGURATION -o /app/publish --no-restore /p:UseAppHost=false /p:SkipClientProjectReference=true
+# Zkopiruj .env do publish output -> v final image bude dostupny jako /app/.env
+RUN [ -f /src/.env ] && cp /src/.env /app/publish/.env || true
 
 FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS final
 WORKDIR /app

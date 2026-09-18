@@ -1,6 +1,7 @@
 .idea
 .vs
 .env
+!.env.example
 package.g.props
 obj
 bin

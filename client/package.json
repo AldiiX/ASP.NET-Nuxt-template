@@ -10,8 +10,12 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
-    "nuxt": "^4.4.2",
-    "sass": "^1.99.0",
-    "vue": "^3.5.32"
+    "nuxt": "^4.5.2",
+    "sass": "^1.104.1",
+    "vue": "^3.5.43"
+  },
+  "allowScripts": {
+    "@parcel/watcher@2.6.0": true,
+    "esbuild@0.28.2": true
   }
 }

@@ -75,19 +75,19 @@ $desktopBreakpoint: 1800px;
 
 @layer base {
     :root[data-theme="light"] {
-        --accent-color: #009859;
+        --accent-color-1: #009859;
         --text-color-1: #151515;
-        --background-color: #dadada;
+        --background-color-1: #dadada;
     }
 
     :root[data-theme="dark"] {
-        --accent-color: #00DC82;
+        --accent-color-1: #00DC82;
         --text-color-1: #dadada;
-        --background-color: #151515;
+        --background-color-1: #151515;
     }
 
     body {
-        background-color: var(--background-color);
+        background-color: var(--background-color-1);
         color: var(--text-color-1);
         transition-duration: 0.3s;
         transition-property: background-color;

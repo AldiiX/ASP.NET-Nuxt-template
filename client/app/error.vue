@@ -100,10 +100,10 @@ function goHome() {
         content: "";
         position: absolute;
         inset: 0;
-        background-color: var(--accent-color, #00DC82);
+        background-color: var(--accent-color-1, #00DC82);
     }
 
-    h1 { font-family: "gabarito", "Arial Black", sans-serif; font-size: 3vw; color: var(--text-color); }
+    h1 { font-family: "gabarito", "Arial Black", sans-serif; font-size: 3vw; color: var(--text-color-1); }
     .desc { font-family: "gabarito", sans-serif; font-size: 16px; margin: 0; color: var(--text-color-lighter); }
 
     .btn {
@@ -112,7 +112,7 @@ function goHome() {
         margin: 0 auto;
         margin-top: 32px;
         padding: 16px 64px;
-        background-color: var(--accent-color);
+        background-color: var(--accent-color-1);
         border: none;
         border-radius: 8px;
         cursor: pointer;
